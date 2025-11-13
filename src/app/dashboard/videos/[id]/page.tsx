@@ -5,9 +5,9 @@ import { notFound } from 'next/navigation'
 import VideoAnalysisPlayer from '@/components/VideoAnalysisPlayer'
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function VideoAnalysisPage({ params }: PageProps) {
@@ -17,9 +17,10 @@ export default async function VideoAnalysisPage({ params }: PageProps) {
     return null
   }
 
+  const resolvedParams = await params
   const video = await prisma.video.findUnique({
     where: {
-      id: params.id
+      id: resolvedParams.id
     },
     include: {
       athlete: {
