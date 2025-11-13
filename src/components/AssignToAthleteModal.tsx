@@ -14,7 +14,7 @@ interface Workout {
 
 interface Athlete {
   id: string
-  name: string
+  name: string | null
 }
 
 interface AssignToAthleteModalProps {
@@ -95,7 +95,7 @@ export default function AssignToAthleteModal({ isOpen, onClose, athlete, onAssig
             <div className="mb-6">
               <h4 className="text-sm font-medium text-gray-900 mb-2">Athlete</h4>
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                <span className="text-blue-900 font-medium">{athlete.name}</span>
+                <span className="text-blue-900 font-medium">{athlete.name || 'Unnamed Athlete'}</span>
               </div>
             </div>
           )}

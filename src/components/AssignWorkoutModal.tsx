@@ -5,7 +5,7 @@ import { X, Users, Calendar } from 'lucide-react'
 
 interface Athlete {
   id: string
-  name: string
+  name: string | null
   email: string
 }
 
@@ -138,7 +138,7 @@ export default function AssignWorkoutModal({ isOpen, onClose, workout, onAssign 
                       />
                       <div className="ml-3 flex-1">
                         <div className="text-sm font-medium text-gray-900">
-                          {athlete.name}
+                          {athlete.name || 'Unnamed Athlete'}
                         </div>
                         <div className="text-xs text-gray-500">
                           {athlete.email}

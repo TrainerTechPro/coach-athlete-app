@@ -16,7 +16,7 @@ interface Exercise {
 interface Assignment {
   id: string
   athlete: {
-    name: string
+    name: string | null
   }
 }
 

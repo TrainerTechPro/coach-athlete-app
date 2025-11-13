@@ -6,7 +6,7 @@ import AssignToAthleteModal from './AssignToAthleteModal'
 
 interface Athlete {
   id: string
-  name: string
+  name: string | null
   email: string
 }
 
@@ -84,7 +84,7 @@ export default function AthleteGrid({ athletes }: AthleteGridProps) {
                 </div>
                 <div className="ml-4">
                   <h3 className="text-lg font-semibold text-gray-900">
-                    {athlete.name}
+                    {athlete.name || 'Unnamed Athlete'}
                   </h3>
                   <p className="text-sm text-gray-600">{athlete.email}</p>
                 </div>
