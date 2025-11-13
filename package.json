@@ -12,17 +12,22 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.930.0",
+    "@aws-sdk/s3-request-presigner": "^3.930.0",
     "@prisma/client": "^6.19.0",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-tabs": "^1.1.13",
     "@tailwindcss/postcss": "^4.1.17",
+    "aws-sdk": "^2.1692.0",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.553.0",
+    "multer": "^2.0.2",
     "next": "^15.0.3",
     "next-auth": "^4.24.10",
+    "next-connect": "^1.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^3.4.0"

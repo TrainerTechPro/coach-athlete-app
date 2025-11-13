@@ -67,6 +67,12 @@ model User {
   assignedWorkouts WorkoutAssignment[]
   workoutLogs     WorkoutLog[]
   exerciseLogs    ExerciseLog[]
+
+  // Video-specific relations
+  athleteVideos   Video[] @relation("AthleteVideos")
+  coachVideos     Video[] @relation("CoachVideos")
+  videoAnalyses   VideoAnalysis[]
+  videoComparisons VideoComparison[]
 }
 
 model AthleteCoach {
@@ -184,4 +190,76 @@ enum Difficulty {
   BEGINNER
   INTERMEDIATE
   ADVANCED
+}
+
+enum EventType {
+  SHOT_PUT
+  DISCUS
+  HAMMER_THROW
+  JAVELIN
+  HIGH_JUMP
+  LONG_JUMP
+  TRIPLE_JUMP
+  POLE_VAULT
+  SPRINT
+  HURDLES
+  DISTANCE
+  OTHER
+}
+
+model Video {
+  id          String       @id @default(cuid())
+  url         String
+  thumbnailUrl String?
+  eventType   EventType
+  athleteId   String
+  coachId     String
+  title       String?
+  description String?
+  duration    Int?         // in seconds
+  uploadedAt  DateTime     @default(now())
+
+  athlete     User         @relation("AthleteVideos", fields: [athleteId], references: [id])
+  coach       User         @relation("CoachVideos", fields: [coachId], references: [id])
+  analyses    VideoAnalysis[]
+  comparisons1 VideoComparison[] @relation("Video1Comparison")
+  comparisons2 VideoComparison[] @relation("Video2Comparison")
+
+  @@index([athleteId])
+  @@index([coachId])
+  @@index([eventType])
+}
+
+model VideoAnalysis {
+  id             String    @id @default(cuid())
+  videoId        String
+  timestamp      Float     // in seconds
+  annotationUrl  String    // URL to the annotated screenshot
+  notes          String?
+  createdBy      String
+  createdAt      DateTime  @default(now())
+
+  video          Video     @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  creator        User      @relation(fields: [createdBy], references: [id])
+
+  @@index([videoId])
+  @@index([createdBy])
+}
+
+model VideoComparison {
+  id           String    @id @default(cuid())
+  video1Id     String
+  video2Id     String
+  title        String?
+  notes        String?
+  createdBy    String
+  createdAt    DateTime  @default(now())
+
+  video1       Video     @relation("Video1Comparison", fields: [video1Id], references: [id])
+  video2       Video     @relation("Video2Comparison", fields: [video2Id], references: [id])
+  creator      User      @relation(fields: [createdBy], references: [id])
+
+  @@index([video1Id])
+  @@index([video2Id])
+  @@index([createdBy])
 }

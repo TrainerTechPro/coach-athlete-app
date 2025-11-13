@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Users, Dumbbell, Calendar, TrendingUp } from 'lucide-react'
+import { Plus, Users, Dumbbell, Calendar, TrendingUp, Video } from 'lucide-react'
 import Link from 'next/link'
 
 interface CoachDashboardProps {
@@ -128,6 +128,14 @@ export default function CoachDashboard({ user }: CoachDashboardProps) {
               >
                 <Dumbbell className="h-4 w-4 mr-2" />
                 Exercise Library
+              </Link>
+
+              <Link
+                href="/dashboard/videos"
+                className="w-full bg-white border border-gray-300 rounded-md py-2 px-4 inline-flex justify-center items-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                <Video className="h-4 w-4 mr-2" />
+                Video Analysis
               </Link>
             </div>
           </div>
