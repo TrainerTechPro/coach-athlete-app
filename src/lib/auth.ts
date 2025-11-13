@@ -1,10 +1,10 @@
-import { NextAuthConfig } from 'next-auth'
+import type { NextAuthOptions } from 'next-auth'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { prisma } from './prisma'
 import bcrypt from 'bcryptjs'
 
-const config = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -48,14 +48,14 @@ const config = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role
+        token.role = (user as any).role
       }
       return token
     },
     async session({ session, token }) {
       if (token && token.sub) {
-        session.user.id = token.sub
-        session.user.role = token.role as 'COACH' | 'ATHLETE'
+        (session.user as any).id = token.sub;
+        (session.user as any).role = token.role
       }
       return session
     },
@@ -64,8 +64,8 @@ const config = {
     signIn: '/auth/signin',
   },
   session: {
-    strategy: 'jwt' as const,
+    strategy: 'jwt',
   },
-} satisfies NextAuthConfig
+}
 
-export const { handlers, auth, signIn, signOut } = NextAuth(config)
+// NextAuth is configured in the API route
