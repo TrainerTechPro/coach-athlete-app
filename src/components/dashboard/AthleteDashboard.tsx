@@ -1,6 +1,6 @@
 'use client'
 
-import { Calendar, Clock, CheckCircle, Target, TrendingUp } from 'lucide-react'
+import { Calendar, Clock, CheckCircle, Target, TrendingUp, BarChart3 } from 'lucide-react'
 import Link from 'next/link'
 
 interface AthleteDashboardProps {
@@ -18,19 +18,22 @@ export default function AthleteDashboard({ user }: AthleteDashboardProps) {
           Welcome back, {user.name}
         </h1>
         <p className="mt-1 text-sm text-gray-600">
-          Track your progress and complete your assigned workouts.
+          Complete your training sessions and log your throwing performance with RPE ratings.
         </p>
       </div>
 
-      {/* Today's Workout */}
+      {/* Today's Training Session */}
       <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-white mb-2">Today's Workout</h2>
-            <p className="text-blue-100">No workout assigned for today</p>
+            <h2 className="text-xl font-bold text-white mb-2">Today's Training Session</h2>
+            <p className="text-blue-100">No training session scheduled for today</p>
+            <Link href="/dashboard/sessions" className="text-white underline text-sm mt-2 inline-block">
+              View all sessions →
+            </Link>
           </div>
           <div className="text-blue-100">
-            <Calendar className="h-12 w-12" />
+            <Target className="h-12 w-12" />
           </div>
         </div>
       </div>
@@ -46,7 +49,7 @@ export default function AthleteDashboard({ user }: AthleteDashboardProps) {
               <div className="ml-5 w-0 flex-1">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">
-                    Workouts This Week
+                    Sessions This Week
                   </dt>
                   <dd className="text-lg font-medium text-gray-900">0</dd>
                 </dl>
@@ -82,9 +85,9 @@ export default function AthleteDashboard({ user }: AthleteDashboardProps) {
               <div className="ml-5 w-0 flex-1">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">
-                    Total Hours
+                    Total Throws
                   </dt>
-                  <dd className="text-lg font-medium text-gray-900">0.0</dd>
+                  <dd className="text-lg font-medium text-gray-900">0</dd>
                 </dl>
               </div>
             </div>
@@ -115,14 +118,17 @@ export default function AthleteDashboard({ user }: AthleteDashboardProps) {
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="p-6">
             <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-              Upcoming Workouts
+              Upcoming Training Sessions
             </h3>
             <div className="text-center py-6">
-              <Calendar className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">No upcoming workouts</h3>
+              <Target className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-2 text-sm font-medium text-gray-900">No upcoming sessions</h3>
               <p className="mt-1 text-sm text-gray-500">
-                Your coach hasn't assigned any workouts yet.
+                Your coach hasn't scheduled any training sessions yet.
               </p>
+              <Link href="/dashboard/sessions" className="text-blue-600 text-sm mt-2 inline-block hover:text-blue-800">
+                View all sessions →
+              </Link>
             </div>
           </div>
         </div>
@@ -130,13 +136,13 @@ export default function AthleteDashboard({ user }: AthleteDashboardProps) {
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="p-6">
             <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-              Recent Activity
+              Recent Training Activity
             </h3>
             <div className="text-center py-6">
-              <CheckCircle className="mx-auto h-12 w-12 text-gray-400" />
+              <BarChart3 className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-medium text-gray-900">No recent activity</h3>
               <p className="mt-1 text-sm text-gray-500">
-                Complete your first workout to see your progress here.
+                Complete your first training session to see your progress here.
               </p>
             </div>
           </div>
@@ -151,9 +157,9 @@ export default function AthleteDashboard({ user }: AthleteDashboardProps) {
           </h3>
           <div className="text-center py-12">
             <TrendingUp className="mx-auto h-16 w-16 text-gray-400" />
-            <h3 className="mt-4 text-lg font-medium text-gray-900">Track Your Progress</h3>
+            <h3 className="mt-4 text-lg font-medium text-gray-900">Track Your Throwing Progress</h3>
             <p className="mt-2 text-sm text-gray-500">
-              Complete workouts to see detailed analytics and progress charts.
+              Complete training sessions to see distance progression, RPE trends, and foul analysis.
             </p>
           </div>
         </div>
@@ -180,8 +186,8 @@ export default function AthleteDashboard({ user }: AthleteDashboardProps) {
               2
             </div>
             <div className="ml-3">
-              <h4 className="text-sm font-medium text-green-900">Follow Workouts</h4>
-              <p className="text-sm text-green-700">Complete assigned workouts and log your progress</p>
+              <h4 className="text-sm font-medium text-green-900">Complete Training Sessions</h4>
+              <p className="text-sm text-green-700">Log your throws, distances, fouls, and rate perceived exertion</p>
             </div>
           </div>
 

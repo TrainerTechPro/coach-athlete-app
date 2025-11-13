@@ -68,11 +68,11 @@ model User {
   workoutLogs     WorkoutLog[]
   exerciseLogs    ExerciseLog[]
 
-  // Video-specific relations
-  athleteVideos   Video[] @relation("AthleteVideos")
-  coachVideos     Video[] @relation("CoachVideos")
-  videoAnalyses   VideoAnalysis[]
-  videoComparisons VideoComparison[]
+
+  // Training session relations
+  coachSessions   TrainingSession[] @relation("CoachSessions")
+  athleteSessions TrainingSession[] @relation("AthleteSessions")
+  throwLogs       ThrowLog[]
 }
 
 model AthleteCoach {
@@ -192,74 +192,95 @@ enum Difficulty {
   ADVANCED
 }
 
-enum EventType {
-  SHOT_PUT
-  DISCUS
-  HAMMER_THROW
-  JAVELIN
-  HIGH_JUMP
-  LONG_JUMP
-  TRIPLE_JUMP
-  POLE_VAULT
-  SPRINT
-  HURDLES
-  DISTANCE
+
+
+
+
+enum DrillType {
+  FULL_THROW
+  STAND_THROW
+  GLIDE_DRILL
+  SPIN_DRILL
+  TECHNICAL_DRILL
+  STRENGTH_DRILL
+  MOBILITY_DRILL
   OTHER
 }
 
-model Video {
-  id          String       @id @default(cuid())
-  url         String
-  thumbnailUrl String?
-  eventType   EventType
-  athleteId   String
-  coachId     String
-  title       String?
-  description String?
-  duration    Int?         // in seconds
-  uploadedAt  DateTime     @default(now())
+enum FoulReason {
+  OUT_FRONT
+  SECTOR_LEFT
+  SECTOR_RIGHT
+  LATE_BLOCK
+  BALANCE_LOSS
+  FOOTWORK_ERROR
+  RELEASE_ERROR
+  OTHER
+}
 
-  athlete     User         @relation("AthleteVideos", fields: [athleteId], references: [id])
-  coach       User         @relation("CoachVideos", fields: [coachId], references: [id])
-  analyses    VideoAnalysis[]
-  comparisons1 VideoComparison[] @relation("Video1Comparison")
-  comparisons2 VideoComparison[] @relation("Video2Comparison")
+enum SessionStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
 
-  @@index([athleteId])
+model TrainingSession {
+  id           String        @id @default(cuid())
+  date         DateTime
+  focus        String
+  description  String?
+  coachId      String
+  athleteId    String
+  status       SessionStatus @default(PLANNED)
+  sessionRPE   Int?          // 1-10 scale, logged by athlete
+  notes        String?       // Post-session notes
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  coach        User          @relation("CoachSessions", fields: [coachId], references: [id])
+  athlete      User          @relation("AthleteSessions", fields: [athleteId], references: [id])
+  drills       SessionDrill[]
+  throwLogs    ThrowLog[]
+
   @@index([coachId])
-  @@index([eventType])
+  @@index([athleteId])
+  @@index([date])
 }
 
-model VideoAnalysis {
-  id             String    @id @default(cuid())
-  videoId        String
-  timestamp      Float     // in seconds
-  annotationUrl  String    // URL to the annotated screenshot
-  notes          String?
-  createdBy      String
-  createdAt      DateTime  @default(now())
+model SessionDrill {
+  id              String    @id @default(cuid())
+  sessionId       String
+  drillType       DrillType
+  implementWeight String    // e.g., "16lb", "2kg"
+  targetReps      Int
+  description     String?
+  order           Int       @default(0)
 
-  video          Video     @relation(fields: [videoId], references: [id], onDelete: Cascade)
-  creator        User      @relation(fields: [createdBy], references: [id])
+  session         TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  throwLogs       ThrowLog[]
 
-  @@index([videoId])
-  @@index([createdBy])
+  @@index([sessionId])
 }
 
-model VideoComparison {
-  id           String    @id @default(cuid())
-  video1Id     String
-  video2Id     String
-  title        String?
-  notes        String?
-  createdBy    String
-  createdAt    DateTime  @default(now())
+model ThrowLog {
+  id              String      @id @default(cuid())
+  sessionId       String
+  drillId         String
+  athleteId       String
+  throwNumber     Int         // 1, 2, 3, etc. within the drill
+  distance        Float?      // in meters
+  isFoul          Boolean     @default(false)
+  foulReason      FoulReason?
+  notes           String?
+  createdAt       DateTime    @default(now())
 
-  video1       Video     @relation("Video1Comparison", fields: [video1Id], references: [id])
-  video2       Video     @relation("Video2Comparison", fields: [video2Id], references: [id])
-  creator      User      @relation(fields: [createdBy], references: [id])
+  session         TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  drill           SessionDrill @relation(fields: [drillId], references: [id], onDelete: Cascade)
+  athlete         User @relation(fields: [athleteId], references: [id])
 
-  @@index([video1Id])
-  @@index([video2Id])
-  @@index([createdBy])
+  @@index([sessionId])
+  @@index([drillId])
+  @@index([athleteId])
+  @@index([createdAt])
 }

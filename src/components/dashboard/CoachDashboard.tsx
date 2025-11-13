@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Users, Dumbbell, Calendar, TrendingUp, Video } from 'lucide-react'
+import { Plus, Users, Dumbbell, Calendar, TrendingUp, Target, BarChart3 } from 'lucide-react'
 import Link from 'next/link'
 
 interface CoachDashboardProps {
@@ -19,7 +19,7 @@ export default function CoachDashboard({ user }: CoachDashboardProps) {
           Welcome back, {user.name}
         </h1>
         <p className="mt-1 text-sm text-gray-600">
-          Manage your athletes and create effective workout programs.
+          Create training sessions, track throwing performance, and analyze your athletes' progress.
         </p>
       </div>
 
@@ -65,14 +65,14 @@ export default function CoachDashboard({ user }: CoachDashboardProps) {
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Calendar className="h-6 w-6 text-yellow-600" />
+                <Target className="h-6 w-6 text-yellow-600" />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">
-                    This Week
+                    Training Sessions
                   </dt>
-                  <dd className="text-lg font-medium text-gray-900">0 sessions</dd>
+                  <dd className="text-lg font-medium text-gray-900">0 total</dd>
                 </dl>
               </div>
             </div>
@@ -107,11 +107,11 @@ export default function CoachDashboard({ user }: CoachDashboardProps) {
             </h3>
             <div className="space-y-3">
               <Link
-                href="/dashboard/workouts/create"
+                href="/dashboard/sessions/create"
                 className="w-full bg-blue-600 border border-transparent rounded-md py-2 px-4 inline-flex justify-center items-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Create New Workout
+                Create Training Session
               </Link>
 
               <Link
@@ -131,11 +131,19 @@ export default function CoachDashboard({ user }: CoachDashboardProps) {
               </Link>
 
               <Link
-                href="/dashboard/videos"
+                href="/dashboard/sessions"
                 className="w-full bg-white border border-gray-300 rounded-md py-2 px-4 inline-flex justify-center items-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                <Video className="h-4 w-4 mr-2" />
-                Video Analysis
+                <Target className="h-4 w-4 mr-2" />
+                View All Sessions
+              </Link>
+
+              <Link
+                href="/dashboard/reports"
+                className="w-full bg-white border border-gray-300 rounded-md py-2 px-4 inline-flex justify-center items-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                <BarChart3 className="h-4 w-4 mr-2" />
+                Performance Reports
               </Link>
             </div>
           </div>
@@ -160,7 +168,7 @@ export default function CoachDashboard({ user }: CoachDashboardProps) {
       {/* Getting Started Guide */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
         <h3 className="text-lg font-medium text-blue-900 mb-4">
-          Getting Started as a Coach
+          Getting Started with Throwing Training
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex items-start">
@@ -168,8 +176,8 @@ export default function CoachDashboard({ user }: CoachDashboardProps) {
               1
             </div>
             <div className="ml-3">
-              <h4 className="text-sm font-medium text-blue-900">Create Exercises</h4>
-              <p className="text-sm text-blue-700">Build your exercise library with custom exercises</p>
+              <h4 className="text-sm font-medium text-blue-900">Create Training Sessions</h4>
+              <p className="text-sm text-blue-700">Design sessions with specific drills, target reps, and implement weights</p>
             </div>
           </div>
 
@@ -178,8 +186,8 @@ export default function CoachDashboard({ user }: CoachDashboardProps) {
               2
             </div>
             <div className="ml-3">
-              <h4 className="text-sm font-medium text-blue-900">Design Workouts</h4>
-              <p className="text-sm text-blue-700">Combine exercises into effective workout plans</p>
+              <h4 className="text-sm font-medium text-blue-900">Track Athlete Progress</h4>
+              <p className="text-sm text-blue-700">Athletes log throws, distances, fouls, and RPE ratings</p>
             </div>
           </div>
 
@@ -188,8 +196,8 @@ export default function CoachDashboard({ user }: CoachDashboardProps) {
               3
             </div>
             <div className="ml-3">
-              <h4 className="text-sm font-medium text-blue-900">Assign to Athletes</h4>
-              <p className="text-sm text-blue-700">Invite athletes and assign personalized workouts</p>
+              <h4 className="text-sm font-medium text-blue-900">Analyze Performance</h4>
+              <p className="text-sm text-blue-700">View detailed reports with charts and foul analysis</p>
             </div>
           </div>
         </div>
